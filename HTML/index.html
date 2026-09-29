@@ -1,0 +1,282 @@
+<html lang="zh-CN">
+<meta charset="UTF-8">
+              <h1>欢迎来到我的网站<h1>
+              <h2>hello<h1>
+
+<meta charset="UTF-8">
+<title>我的交互网站</title>
+<script>
+//首页加载贴纸
+const wrap = document.body;
+function loadHomeStickers(){
+  const raw = localStorage.getItem("homeStickers");
+  if(!raw) return;
+  const stickers = JSON.parse(raw);
+  stickers.forEach(s=>{
+    const img = document.createElement("img");
+    img.src = s.src;
+    img.style.position = "fixed";
+    img.style.left = s.left;
+    img.style.top = s.top;
+    img.style.width = "100px";
+    img.style.pointerEvents = "none";
+    document.body.appendChild(img);
+  })
+}
+loadHomeStickers();
+</script><body>
+
+<html lang="zh-CN">
+<meta charset="UTF-8">
+<title>我的交互网站</title>
+
+<body>
+
+<script>
+function changeText(){
+    document.getElementById("text").innerText = "你点击了按钮！";
+}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的日记主页</title>
+</head>
+<body>
+<h1>📖 我的日记本</h1>
+<p>点击打开日记：</p>
+<ul>
+  <li><a href="note.html">第一篇日记</a></li>
+  <li><a href="note2.html">第二篇日记</a></li>
+</ul>
+</body>
+</html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>笔记</title>
+<style>
+body
+</style>
+</head>
+<body>
+<h1>✍️ 我的笔记</h1>
+
+<h3>笔记标题</h3>
+<input type="text" id="title" placeholder="输入标题">
+<h3>笔记内容</h3>
+<textarea id="content" placeholder="在这里写日记或者笔记……"></textarea>
+<!-- 隐藏，用来记录当前正在编辑的笔记序号 -->
+<input type="hidden" id="editIndex" value="-1">
+
+<button onclick="saveDiary()">保存笔记</button>
+<button onclick="cancelEdit()">取消编辑</button>
+<button onclick="clearAll()">清空全部笔记</button>
+
+<p><a href="index.html">← 返回日记首页</a></p>
+
+<h3>已保存笔记</h3>
+<div id="list"></div>
+
+<script>
+// 读取笔记
+function loadDiary(){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  let box = document.getElementById("list");
+  box.innerHTML = "";
+  diarys.forEach(function(item,index){
+    box.innerHTML += `
+    <div class="diary-item">
+      <h4>${item.title}</h4>
+      <p>${item.content}</p>
+      <button onclick="editDiary(${index})">编辑</button>
+      <button onclick="delDiary(${index})">删除这篇</button>
+    </div>
+    `
+  })
+}
+
+// 点编辑按钮，把旧笔记放到输入框
+function editDiary(index){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  let item = diarys[index];
+  document.getElementById("title").value = item.title;
+  document.getElementById("content").value = item.content;
+  document.getElementById("editIndex").value = index;
+  //滚动到输入框
+  window.scrollTo(0,0);
+}
+
+//保存：新增 OR 修改旧笔记
+function saveDiary(){
+  let title = document.getElementById("title").value;
+  let content = document.getElementById("content").value;
+  let editIndex = Number(document.getElementById("editIndex").value);
+
+  if(!title || !content){
+    alert("标题和内容不能为空！");
+    return;
+  }
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+
+  if(editIndex === -1){
+    //新增笔记
+    diarys.push({title,content});
+  }else{
+    //修改已有笔记
+    diarys[editIndex].title = title;
+    diarys[editIndex].content = content;
+  }
+  localStorage.setItem("myDiary", JSON.stringify(diarys));
+  resetInput();
+  loadDiary();
+  alert("保存成功！");
+}
+
+//取消编辑，清空输入框
+function cancelEdit(){
+  resetInput();
+}
+
+function resetInput(){
+  document.getElementById("title").value = "";
+  document.getElementById("content").value = "";
+  document.getElementById("editIndex").value = "-1";
+}
+
+function delDiary(index){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  diarys.splice(index,1);
+  localStorage.setItem("myDiary", JSON.stringify(diarys));
+  loadDiary();
+}
+
+function clearAll(){
+  if(confirm("确定删除所有笔记？无法恢复！")){
+    localStorage.removeItem("myDiary");
+    loadDiary();
+  }
+}
+
+loadDiary();
+</script>
+</body>
+</html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>笔记</title>
+<style>
+*{
+  box-sizing: border-box;
+  font-family: "Microsoft Yahei", sans-serif;
+}
+body
+.back-link:hover{text-decoration:underline;}
+</style>
+</head>
+</script>
+<body>
+<h1>✍️ 我的笔记</h1>
+
+<h3>笔记标题</h3>
+<input type="text" id="title" placeholder="输入标题">
+<h3>笔记内容</h3>
+<textarea id="content" placeholder="在这里写日记或者笔记……"></textarea>
+<input type="hidden" id="editIndex" value="-1">
+
+<button onclick="saveDiary()">保存笔记</button>
+<button onclick="cancelEdit()">取消编辑</button>
+<button onclick="clearAll()">清空全部笔记</button>
+
+<a class="back-link" href="index.html">← 返回日记首页</a>
+
+<h3>已保存笔记</h3>
+<div id="list"></div>
+
+<script>
+function loadDiary(){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  let box = document.getElementById("list");
+  box.innerHTML = "";
+  diarys.forEach(function(item,index){
+    box.innerHTML += `
+    <div class="diary-item">
+      <h4>${item.title}</h4>
+      <p>${item.content}</p>
+      <button onclick="editDiary(${index})">编辑</button>
+      <button onclick="delDiary(${index})">删除这篇</button>
+    </div>
+    `
+  })
+}
+
+function editDiary(index){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  let item = diarys[index];
+  document.getElementById("title").value = item.title;
+  document.getElementById("content").value = item.content;
+  document.getElementById("editIndex").value = index;
+  window.scrollTo(0,0);
+}
+
+function saveDiary(){
+  let title = document.getElementById("title").value;
+  let content = document.getElementById("content").value;
+  let editIndex = Number(document.getElementById("editIndex").value);
+
+  if(!title || !content){
+    alert("标题和内容不能为空！");
+    return;
+  }
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+
+  if(editIndex === -1){
+    diarys.push({title,content});
+  }else{
+    diarys[editIndex].title = title;
+    diarys[editIndex].content = content;
+  }
+  localStorage.setItem("myDiary", JSON.stringify(diarys));
+  resetInput();
+  loadDiary();
+  alert("保存成功！");
+}
+
+function cancelEdit(){
+  resetInput();
+}
+
+function resetInput(){
+  document.getElementById("title").value = "";
+  document.getElementById("content").value = "";
+  document.getElementById("editIndex").value = "-1";
+}
+
+function delDiary(index){
+  let diarys = JSON.parse(localStorage.getItem("myDiary")) || [];
+  diarys.splice(index,1);
+  localStorage.setItem("myDiary", JSON.stringify(diarys));
+  loadDiary();
+}
+
+function clearAll(){
+  if(confirm("确定删除所有笔记？无法恢复！")){
+    localStorage.removeItem("myDiary");
+    loadDiary();
+  }
+}
+
+loadDiary();
+</script>
+<div style="margin-left:70%;margin-top:20px;">
+  <h3>今日一句</h3>
+  <p id="say"></p>
+</div>
+<script>
+const words = ["保持开心，好好记日记","写代码慢慢来别着急","失败多试几次就搞定","耐心一点，总会成功"];
+document.getElementById("say").innerText = words[Math.floor(Math.random()*words.length)];
+</script>
