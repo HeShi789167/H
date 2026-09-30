@@ -1,0 +1,65 @@
+<body><a href="index.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#5489ff;color:white;cursor:pointer;">🏠 返回首页</button></a>
+  <a href="pet.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#724bff;color:white;cursor:pointer;">🐱 宠物小屋</button></a>
+  <a href="note.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#ff9944;color:white;cursor:pointer;">📖 写日记</button></a></body>
+  <body><p>任务：完成一篇日记 💰奖励5金币</p>
+  <button onclick="claimTaskCoin()">领取奖励</button>
+</div>
+
+<script>
+//领取任务金币
+function claimTaskCoin(){
+  let coin = Number(localStorage.getItem("coin")) || 0;
+  coin += 5;
+  localStorage.setItem("coin", coin);
+  alert("任务完成！获得5金币💰");
+}
+</script></body>
+<div style="padding:20px;">
+    <h2>📋 任务面板</h2>
+
+    <div style="padding:14px;margin:10px 0;background:#fff;border-radius:12px;box-shadow:0 2px 8px #00000012;">
+        <p>任务：写下你的第一篇日记 💰奖励：10金币</p>
+        <button id="task1Btn" onclick="getTask1()">领取奖励</button>
+    </div>
+
+    <!-- 导航按钮 -->
+    <br>
+    <a href="index.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#5489ff;color:white;cursor:pointer;">🏠 返回首页</button></a>
+    <a href="pet.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#724bff;color:white;cursor:pointer;">🐱 宠物小屋</button></a>
+    <a href="note.html"><button style="padding:10px 20px;font-size:16px;border:none;border-radius:10px;background:#ff9944;color:white;cursor:pointer;">📖 写日记</button></a>
+</div>
+
+<script>
+//页面加载检查任务状态
+function checkTaskStatus(){
+    if(localStorage.getItem("task1Done") === "true"){
+        document.getElementById("task1Btn").disabled = true;
+        document.getElementById("task1Btn").innerText = "✅ 已领取";
+    }
+}
+
+//领取任务奖励
+function getTask1(){
+    let coin = Number(localStorage.getItem("coin")) || 0;
+    coin += 10;
+    localStorage.setItem("coin", coin);
+    localStorage.setItem("task1Done", "true");
+    checkTaskStatus();
+    alert("一次性任务完成！获得10金币💰");
+}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网页标题</title>
+</head>
+<body>
+
+
+    <!-- ==========好友========== -->
+    <a friend.html="renwu.html">
+        <button>📋 任务面板</button>
+    </a>
+    
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>宠物小屋</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui;}
+        body{
+            min-height:100vh;
+            background:#f0f6ff;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            padding:20px;
+        }
+        .pet-box{
+            background:white;
+            padding:36px;
+            border-radius:20px;
+            box-shadow:0 4px 16px #00000015;
+            text-align:center;
+            width:520px;
+        }
+        .pet{
+            font-size:80px;
+            margin:10px 0;
+        }
+        .info{
+            font-size:18px;
+            margin:12px 0;
+        }
+        button{
+            padding:10px 20px;
+            margin:8px;
+            border:none;
+            border-radius:10px;
+            font-size:16px;
+            cursor:pointer;
+            background:#5489ff;
+            color:white;
+        }
+        button:disabled{
+            background:#bbbbbb;
+            cursor:not-allowed;
+        }
+    </style>
+</head>
+<body>
+<div class="pet-box">
+    <h2>我的虚拟宠物</h2>
+    <div class="pet" id="petEmoji">🐱</div>
+    <div class="info">💰 金币：<span id="coin">0</span></div>
+    <div class="info">❤️ 宠物好感度：<span id="love">0</span></div>
+    <button id="feedBtn" onclick="feedPet()">喂食（消耗10金币）</button>
+    <br>
+    <a href="index.html"><button>🏠 返回首页</button></a>
+    <a href="renwu.html"><button>📋 任务面板</button></a>
+    <a href="note.html"><button>📖 写日记</button></a>
+</div>
+
+<script>
+//读取本地存储金币和好感
+let coin = Number(localStorage.getItem("coin")) || 0;
+let love = Number(localStorage.getItem("petLove")) || 0;
+
+//刷新页面显示
+function refreshUI(){
+    document.getElementById("coin").innerText = coin;
+    document.getElementById("love").innerText = love;
+    //金币不足10，喂食按钮变灰不能点
+    document.getElementById("feedBtn").disabled = coin < 10;
+}
+
+//喂食函数
+function feedPet(){
+    if(coin >= 10){
+        coin -= 10;
+        love += 10;
+        localStorage.setItem("coin", coin);
+        localStorage.setItem("petLove", love);
+        refreshUI();
+        alert("喂食成功！宠物好感+10");
+    }
+}
+
+refreshUI();
+</script>
+</body>
+</html>
