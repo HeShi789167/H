@@ -60,6 +60,16 @@ function delDiary(index){
   diarys.splice(index,1);
   localStorage.setItem("myDiary", JSON.stringify(diarys));
   loadDiary();
+}function saveDiary(){
+  const text = document.getElementById('diary').value;
+  localStorage.setItem('mydiary', text);
+
+  let userData = getCurrentUserData();
+  if(!userData) return;
+  userData.coin +=5;
+  saveCurrentUserData(userData);
+
+  alert("日记保存成功！获得5金币💰");
 }
 
 function clearAll(){
@@ -75,6 +85,32 @@ loadDiary();
 </html>
 <textarea style="width:400px;height:250px;" placeholder="在这里写笔记"></textarea>
 </script>
+<script>
+// 获取日记列表和金币
+function getDiaries(){
+  return JSON.parse(localStorage.getItem("diaries") || "[]");
+}
+function getCoin(){
+  return Number(localStorage.getItem("coin") || 0);
+}
+function saveCoin(num){
+  localStorage.setItem("coin", num);
+}
 
+// 领取日记奖励
+function claimReward(diaryIndex){
+  const list = getDiaries();
+  const diary = list[diaryIndex];
+  if(diary.hasRewardClaimed){
+    alert("这篇日记已经领过金币啦！");
+    return;
+  }
+  saveCoin(getCoin() + 5);
+  diary.hasRewardClaimed = true;
+  localStorage.setItem("diaries", JSON.stringify(list));
+  alert("领取成功！+5金币");
+  renderDiary(); // 刷新日记列表
+}
+</script>
 </body>
 </html>
